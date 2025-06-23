@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/template') ?>
 <?= $this->section('content') ?>
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center">
@@ -27,7 +28,7 @@
                         <h3 class="card-title mb-0">Tabel Data Profil</h3>
                     </div>
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-bordered table-hover text-nowrap mb-0 text-center">
+                        <table id="profilTable" class="table table-bordered table-hover text-nowrap mb-0 text-center">
                             <thead class="thead-dark">
                                 <tr>
                                     <th width="90">Foto</th>
@@ -45,7 +46,7 @@
                                     <?php foreach ($profiles as $profile) : ?>
                                         <tr>
                                             <td>
-                                                <?php if ($profile['photo']) : ?>
+                                                <?php if (!empty($profile['photo'])) : ?>
                                                     <img src="<?= base_url('uploads/photos/' . $profile['photo']) ?>" class="img-thumbnail" width="70">
                                                 <?php else : ?>
                                                     <span class="text-muted">-</span>
@@ -86,4 +87,26 @@
         </div>
     </div>
 </section>
+
+<!-- Inisialisasi DataTables + Export -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    $('#profilTable').DataTable({
+      pageLength: 5,
+      responsive: true,
+      autoWidth: false,
+      dom: 'Bfrtip',
+      buttons: [
+        { extend: 'copy', text: 'Salin' },
+        { extend: 'excel', text: 'Unduh Excel' },
+        { extend: 'pdf', text: 'Unduh PDF' },
+        { extend: 'print', text: 'Cetak' }
+      ],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+      }
+    });
+  });
+</script>
+
 <?= $this->endSection() ?>
